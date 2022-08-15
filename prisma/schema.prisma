@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model balance {
+model transactions {
   id     Int      @id @default(autoincrement())
   date   DateTime @default(now()) @db.Timestamp(6)
   userId Int
@@ -20,5 +20,5 @@ model users {
   name     String
   email    String
   password String
-  balance  balance[]
+  transactions  transactions[]
 }

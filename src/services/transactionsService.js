@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 
-import { unauthorizedError, notFoundError } from "../middlewares/errorHandlerMiddleware.js";
+import { unauthorizedError, notFoundError, wrongSchemaError } from "../middlewares/errorHandlerMiddleware.js";
 import { authRepository } from "../repositories/authRepository.js";
 import { transactionsRepository } from "../repositories/transactionsRepository.js";
+import { valueSchema } from "../schemas/transactionsSchemas.js";
 
 
 async function verifyToken(authorization) {
@@ -32,7 +33,20 @@ async function balance(userId) {
   return balance;
 }
 
+function joiValue(data) {
+  const validation = valueSchema.validate(data);
+  if (validation.error) {
+    throw wrongSchemaError(validation.error.message);
+  }
+}
+
+async function addTransaction(userId, value) {
+  await transactionsRepository.addTransaction(userId, value);
+}
+
 export const transactionsService = {
   verifyToken,
-  balance
+  balance,
+  joiValue,
+  addTransaction
 };

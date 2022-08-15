@@ -13,6 +13,16 @@ async function balance(userId) {
   return response._sum.value;
 }
 
+async function addTransaction(userId, value) {
+  await prisma.transactions.create({
+    data: {
+      userId,
+      value
+    }
+  })
+}
+
 export const transactionsRepository = {
-  balance
+  balance,
+  addTransaction
 };

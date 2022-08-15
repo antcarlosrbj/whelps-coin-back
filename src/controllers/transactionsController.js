@@ -13,6 +13,19 @@ async function balance(req, res) {
 
 }
 
+async function buy(req, res) {
+
+  const { authorization } = req.headers;
+  const data = req.body;
+
+  const user = await transactionsService.verifyToken(authorization);
+  transactionsService.joiValue(data);
+  await transactionsService.addTransaction(user.id, data.value);
+
+  res.sendStatus(200);
+}
+
 export const transactionsController = {
-  balance
+  balance,
+  buy
 };

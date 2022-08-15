@@ -25,7 +25,20 @@ async function buy(req, res) {
   res.sendStatus(200);
 }
 
+async function sell(req, res) {
+
+  const { authorization } = req.headers;
+  const data = req.body;
+
+  const user = await transactionsService.verifyToken(authorization);
+  transactionsService.joiValue(data);
+  await transactionsService.addTransaction(user.id, -data.value);
+
+  res.sendStatus(200);
+}
+
 export const transactionsController = {
   balance,
-  buy
+  buy,
+  sell
 };

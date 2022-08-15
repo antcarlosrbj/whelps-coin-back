@@ -14,7 +14,7 @@ async function verifyToken(authorization) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await checkRegisteredEmail(decoded.email);
-    return {email: user.email, id: user.id};
+    return {email: user.email, id: user.id, name: user.name};
   } catch(err) {
     throw unauthorizedError(err.message);
   }
